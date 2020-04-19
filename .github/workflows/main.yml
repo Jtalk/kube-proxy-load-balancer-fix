@@ -39,10 +39,9 @@ jobs:
         with:
           args: kubernetes cluster kubeconfig show ${{ secrets.DO_CLUSTER_NAME }} > $GITHUB_WORKSPACE/.kubeconfig
       - name: Deploy to Kubernetes
-        uses: Azure/k8s-deploy@v1
+        uses: Azure/k8s-deploy@99c4423993df6516e69c6e54e33b6fd19f6ffd1d
         with:
           namespace: kube-system
-          kubectl-version: v1.17.0
           manifests: |
             deploy/lb-fix.cronjob.yaml
             deploy/lb-fix.role.yaml
