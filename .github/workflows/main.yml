@@ -43,8 +43,8 @@ jobs:
         with:
           namespace: kube-system
           manifests: |
-            deploy/lb-fix.cronjob.yaml	
-            deploy/lb-fix.role.yaml	
+            deploy/lb-fix.cronjob.yaml
+            deploy/lb-fix.role.yaml
             deploy/lb-fix.rolebinding.yaml
             deploy/lb-fix.serviceaccount.yaml
           images: ${{ env.DOCKER_IMAGE }}
