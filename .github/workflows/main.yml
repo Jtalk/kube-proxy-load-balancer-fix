@@ -49,4 +49,7 @@ jobs:
             deploy/lb-fix.rolebinding.yaml
             deploy/lb-fix.serviceaccount.yaml
           images: ${{ env.DOCKER_IMAGE }}
+      - run: |
+          cat /tmp/CronJob_lb-routing-fix_*
+        if: failure()
           
