@@ -7,7 +7,7 @@ env:
   DOCKER_IMAGE: jtalk/kube-proxy-load-balancer-fix:${{ github.sha }}
 
 jobs:
-  build:
+  build-push:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -22,3 +22,26 @@ jobs:
     - name: Deploy image
       if: github.ref == 'refs/heads/master'
       run: docker push ${{ env.DOCKER_IMAGE }}
+      
+  deploy: 
+    name: Deploy the daily cleanup job for the staging cluster
+    runs-on: ubuntu-latest
+    needs: [build-push]
+    if: github.ref == 'refs/heads/master'
+    env:
+      KUBECONFIG: ${{ github.workspace }}/.kubeconfig
+    steps:
+      - uses: actions/checkout@v1
+      - name: Load Kubernetes config
+        uses: digitalocean/action-doctl@v1.8.0
+        env:
+          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DO_TOKEN }}
+        with:
+          args: kubernetes cluster kubeconfig show ${{ secrets.DO_CLUSTER_NAME }} > $GITHUB_WORKSPACE/.kubeconfig
+      - name: Deploy to Kubernetes
+        uses: Azure/k8s-deploy@v1
+        with:
+          namespace: kube-system
+          manifests: deploy/
+          images: ${{ env.DOCKER_IMAGE }}
+          
