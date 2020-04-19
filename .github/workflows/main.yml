@@ -39,7 +39,7 @@ jobs:
         with:
           args: kubernetes cluster kubeconfig show ${{ secrets.DO_CLUSTER_NAME }} > $GITHUB_WORKSPACE/.kubeconfig
       - name: Deploy to Kubernetes
-        uses: Azure/k8s-deploy@99c4423993df6516e69c6e54e33b6fd19f6ffd1d
+        uses: jtalk/k8s-deploy@master
         with:
           namespace: kube-system
           manifests: |
@@ -48,7 +48,4 @@ jobs:
             deploy/lb-fix.rolebinding.yaml
             deploy/lb-fix.serviceaccount.yaml
           images: ${{ env.DOCKER_IMAGE }}
-      - run: |
-          cat /tmp/CronJob_lb-routing-fix_*
-        if: failure()
           
