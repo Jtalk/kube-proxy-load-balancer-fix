@@ -15,5 +15,5 @@ spec:
           - name: lb-routing-fix
             image: jtalk/kube-proxy-load-balancer-fix:[[IMAGE_TAG]]
             args:
-            - 159.65.210.9
+            - 159.65.209.138
           restartPolicy: Never
